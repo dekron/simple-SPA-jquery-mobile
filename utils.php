@@ -1,5 +1,23 @@
 <?php
-$str = file_get_contents('http://sknt.ru/job/frontend/data.json');
+function curl_get_contents($url,$array = false)
+{
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+
+    if(isset($array) && $array){
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($array));
+    }
+
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
+}
+
+$str = curl_get_contents('http://sknt.ru/job/frontend/data.json');
 $data = json_decode($str, true);
 function setStyleColor($speed)
 {
